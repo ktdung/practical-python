@@ -12,8 +12,24 @@
 #   print(f'Total cost: {total_cost}')
 
 # Exercise 1.28
-import gzip
+# import gzip
 
-with gzip.open("Data/portfolio.csv.gz", "rt") as file:
-  for line in file:
-    print(line, end='')
+# with gzip.open("Data/portfolio.csv.gz", "rt") as file:
+#   for line in file:
+#     print(line, end='')
+
+
+# Exercise 1.30
+def portfolio_cost(filename):
+  total_cost = 0.0
+  with open(filename, 'rt') as file:
+    next(file)
+    for line in file:
+      parts = line.split(',')
+      shares = int(parts[1])
+      price = float(parts[2])
+      total_cost += shares * price
+  return total_cost
+
+cost = portfolio_cost('Data/portfolio.csv')
+print('Total cost:', cost)
