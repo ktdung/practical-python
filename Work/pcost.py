@@ -39,6 +39,7 @@
 # print('Total cost:', cost)
 
 # Exercise 1.32: Using a library function
+import sys
 import csv
 def portfolio_cost(filename):
   total_cost = 0.0
@@ -55,5 +56,11 @@ def portfolio_cost(filename):
       total_cost += shares * price
   return total_cost
 
-cost = portfolio_cost('Data/portfolio.csv')
+
+if len(sys.argv) == 2:
+  filename = sys.argv[1]
+else:
+  filename = 'Data/portfolio.csv'
+
+cost = portfolio_cost(filename)
 print('Total cost:', cost)
