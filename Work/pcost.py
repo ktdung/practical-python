@@ -26,10 +26,14 @@ def portfolio_cost(filename):
     next(file)
     for line in file:
       parts = line.split(',')
-      shares = int(parts[1])
-      price = float(parts[2])
+      try:
+        shares = int(parts[1])
+        price = float(parts[2])
+      except ValueError:
+        print('Error: There was a problem with the data format in the file.')
+        continue
       total_cost += shares * price
   return total_cost
 
-cost = portfolio_cost('Data/portfolio.csv')
+cost = portfolio_cost('Data/missing.csv')
 print('Total cost:', cost)
