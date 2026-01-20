@@ -10,4 +10,3 @@ d = {
   'shares': int(row[1]),
   'price': float(row[2])
 }
-print(f"{d['shares'] * d['price']:0.2f}")
