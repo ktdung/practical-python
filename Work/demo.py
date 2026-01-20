@@ -1,9 +1,11 @@
-records = []
+prices = {}
 
-with open('Data/portfolio.csv', 'rt') as f:
-  next(f) # skip header
+with open("Data/prices.csv") as f:
   for line in f:
+    if len(line.strip()) == 0:
+      continue
     row = line.split(',')
-    records.append((row[0], int(row[1]), float(row[2]) ))
+    prices[row[0].strip().strip('"')] = float(row[1])
 
-print(records)
+
+print(prices)
