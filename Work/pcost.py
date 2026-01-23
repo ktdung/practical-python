@@ -49,17 +49,18 @@ def portfolio_cost(filename):
 
   with open(filename, 'rt') as file:
     reader = csv.reader(file)
-    next(reader)
-    for rowno, parts in enumerate(reader, start=1):
+    headers = next(reader)
+    for rowno, row in enumerate(reader, start=1):
+      record = dict(zip(headers, row))
       try:
-        shares = int(parts[1])
-        price = float(parts[2])
+        shares = int(record['shares'])
+        price = float(record['price'])
+        total_cost += shares * price
       except ValueError:
-        print(f'Row {rowno}: Coundn\'t convert: {parts}')
+        print(f'Row {rowno}: Coundn\'t convert: {row}')
         # print('Error: There was a problem with the data format in the file.')
         continue
 
-      total_cost += shares * price
   return total_cost
 
 
