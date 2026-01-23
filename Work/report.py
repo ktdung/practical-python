@@ -3,9 +3,7 @@
 # Exercise 2.4: A list of tuples
 # Exercise 2.5: List of Dictionaries
 # Exercise 2.7: Finding out if you can retire
-# Exercise 2.9: Collecting Data
-
-
+# Exercise 2.9: 2:11 Collecting Data
 
 import csv
 
@@ -18,12 +16,12 @@ def read_portfolio(filename):
     next(rows)
     for row in rows:
       try:
-        hoding = {
+        holding = {
           'name': row[0],
           'shares': int(row[1]),
           'price': float(row[2])
         }
-        portfolio.append(hoding)
+        portfolio.append(holding)
       except ValueError:
         print('Error: There was a problem with the data format in the file.')
         continue
@@ -66,9 +64,9 @@ def main():
 
   headers = ('Name', 'Shares', 'Price', 'Change')
   print(f'{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}')
-  print('---------- ---------- ---------- -----------')
-  for r in report:
-    name, shares, current_price, change = r
-    print(f'{name:>10s} {shares:>10d} {current_price:>10.2f} {change:10.2f}')
+  print(f'{"-"*10} {"-"*10} {"-"*10} {"-"*10}')
+  for name, shares, current_price, change in report:
+    price_str = f'${current_price:0.2f}'
+    print(f'{name:>10s} {shares:>10d} {price_str:>10s} {change:>10.2f}')
 
 main()
