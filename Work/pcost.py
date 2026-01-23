@@ -39,6 +39,8 @@
 # print('Total cost:', cost)
 
 # Exercise 1.32: Using a library function
+# Exercise 2.15: A practical enumerate() example
+
 import sys
 import csv
 def portfolio_cost(filename):
@@ -48,13 +50,15 @@ def portfolio_cost(filename):
   with open(filename, 'rt') as file:
     reader = csv.reader(file)
     next(reader)
-    for parts in reader:
+    for rowno, parts in enumerate(reader, start=1):
       try:
         shares = int(parts[1])
         price = float(parts[2])
       except ValueError:
-        print('Error: There was a problem with the data format in the file.')
+        print(f'Row {rowno}: Coundn\'t convert: {parts}')
+        # print('Error: There was a problem with the data format in the file.')
         continue
+
       total_cost += shares * price
   return total_cost
 
