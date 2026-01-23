@@ -3,6 +3,8 @@
 # Exercise 2.4: A list of tuples
 # Exercise 2.5: List of Dictionaries
 # Exercise 2.7: Finding out if you can retire
+# Exercise 2.9: Collecting Data
+
 
 
 import csv
@@ -45,30 +47,28 @@ def read_prices(filename):
         continue
   return prices
 
-def make_report():
-  portfolio = read_portfolio('Data/portfolio.csv')
-  prices = read_prices('Data/prices.csv')
 
-  total_code = 0.0
+def make_report(portfolio, prices):
   current_value = 0.0
+  rows = []
 
   for stock in portfolio:
-    cost = stock['shares'] * stock['price']
-    total_code += cost
     current_price = prices.get(stock['name'], 0)
-    current_value += stock['shares'] * current_price
+    change = current_price - stock['price']
+    rows.append((stock['name'], stock['shares'], current_price, change))
 
-  print(f'Total cost of portfolio: ${total_code:,.2f}')
-  print(f'Current value of portfolio: ${current_value:,.2f}')
+  return rows
 
-  gain_loss = current_value - total_code
-  if gain_loss > 0:
-    print(f'You have a gain of: ${gain_loss:,.2f}')
-  elif gain_loss < 0:
-    print(f'You have a loss of: ${-gain_loss:,.2f}')
-  else:
-    print('You have neither a gain nor a loss.')
 def main():
-  make_report()
+  portfolio = read_portfolio('Data/portfolio.csv')
+  prices = read_prices('Data/prices.csv')
+  report = make_report(portfolio, prices)
+
+  headers = ('Name', 'Shares', 'Price', 'Change')
+  print(f'{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}')
+  print('---------- ---------- ---------- -----------')
+  for r in report:
+    name, shares, current_price, change = r
+    print(f'{name:>10s} {shares:>10d} {current_price:>10.2f} {change:10.2f}')
 
 main()
