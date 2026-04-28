@@ -8,27 +8,32 @@
 import csv
 
 def read_portfolio(filename):
-  '''Reads a portfolio file and returns a list of (name, shares, price) tuples'''
+  '''Reads a portfolio file and returns a list of dictionaries
+    with keys (name, shares, price) '''
   portfolio = []
 
   with open(filename, 'rt') as file:
     rows = csv.reader(file)
-    next(rows)
+    headers = next(rows)
+
     for row in rows:
       try:
-        holding = {
-          'name': row[0],
-          'shares': int(row[1]),
-          'price': float(row[2])
+        record = dict(zip(headers, row))
+        stock = {
+          'name': record['name'],
+          'shares': int(record['shares']),
+          'price': float(record['price'])
         }
-        portfolio.append(holding)
+        portfolio.append(stock)
       except ValueError:
         print('Error: There was a problem with the data format in the file.')
         continue
   return portfolio
 
 def read_prices(filename):
-  '''Reads a price file and returns a dictionary of {name: price} pairs'''
+  '''
+  Read a CSV file of price data into a dict mapping names to prices.
+  '''
   prices = {}
 
   with open(filename, 'rt') as file:
@@ -47,7 +52,9 @@ def read_prices(filename):
 
 
 def make_report(portfolio, prices):
-  current_value = 0.0
+  '''
+  Make a list of (name, shares, price, change) tuples given a portfolio list and a price dict.
+  '''
   rows = []
 
   for stock in portfolio:
@@ -57,16 +64,30 @@ def make_report(portfolio, prices):
 
   return rows
 
-def main():
-  portfolio = read_portfolio('Data/portfolio.csv')
-  prices = read_prices('Data/prices.csv')
-  report = make_report(portfolio, prices)
-
+def print_report(reportdata):
+  '''
+  Print a nicely formatted report of (name, shares, price, change) tuples.
+  '''
   headers = ('Name', 'Shares', 'Price', 'Change')
   print(f'{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}')
   print(f'{"-"*10} {"-"*10} {"-"*10} {"-"*10}')
-  for name, shares, current_price, change in report:
-    price_str = f'${current_price:0.2f}'
-    print(f'{name:>10s} {shares:>10d} {price_str:>10s} {change:>10.2f}')
+  for row in reportdata:
+    print(f'{row[0]:>10s} {row[1]:>10d} {row[2]:>10.2f} {row[3]:>10.2f}')
 
-main()
+def portfolio_report(portfolio_file, prices_file):
+  '''
+  Make a stock report from a portfolio file and a prices file.
+  '''
+
+  # Read data file
+  portfolio = read_portfolio(portfolio_file)
+  prices = read_prices(prices_file)
+
+  # Create the report data
+  report = make_report(portfolio, prices)
+
+  # Print it out
+  print_report(report)
+
+# Uncomment the following line to run the program
+portfolio_report('Data/portfolio.csv', 'Data/prices.csv')
