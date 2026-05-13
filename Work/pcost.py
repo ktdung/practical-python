@@ -42,35 +42,19 @@
 # Exercise 2.15: A practical enumerate() example
 
 import sys
-import csv
+import report
 def portfolio_cost(filename):
-  '''Computes the total cost (shares*price) of a portfolio file'''
-  total_cost = 0.0
-
-  with open(filename, 'rt') as file:
-    reader = csv.reader(file)
-    headers = next(reader)
-    for rowno, row in enumerate(reader, start=1):
-      record = dict(zip(headers, row))
-      try:
-        shares = int(record['shares'])
-        price = float(record['price'])
-        total_cost += shares * price
-      except ValueError:
-        print(f'Row {rowno}: Coundn\'t convert: {row}')
-        # print('Error: There was a problem with the data format in the file.')
-        continue
-
-  return total_cost
+    '''Computes the total cost (shares*price) of a portfolio file'''
+    portfolio = report.read_portfolio(filename)
+    return sum(stock['shares'] * stock['price'] for stock in portfolio)
 
 
 if len(sys.argv) == 2:
   filename = sys.argv[1]
 else:
   # filename = 'Data/missing.csv'
-  filename = 'Data/portfolio.csv'
+#   filename = 'Data/portfolio.csv'
+    filename = input('Enter the portfolio filename: ')
 
 cost = portfolio_cost(filename)
 print('Total cost:', cost)
-
-print(sys.argv)

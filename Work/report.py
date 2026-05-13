@@ -1,14 +1,3 @@
-# report.py
-#
-# Exercise 2.4: A list of tuples
-# Exercise 2.5: List of Dictionaries
-# Exercise 2.7: Finding out if you can retire
-# Exercise 2.9: 2:11 Collecting Data
-
-
-
-from fileinput import filename
-
 import fileparse
 
 def read_portfolio(filename):
