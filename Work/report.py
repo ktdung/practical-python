@@ -1,5 +1,6 @@
 import fileparse
 import sys
+import stock
 
 def read_portfolio(filename):
     '''
@@ -7,7 +8,9 @@ def read_portfolio(filename):
     with keys (name, shares, price)
     '''
     with open(filename, 'rt') as lines:
-        return fileparse.parse_csv(lines, select=['name', 'shares', 'price'], types=[str, int, float])
+        portdicts =  fileparse.parse_csv(lines, select=['name', 'shares', 'price'], types=[str, int, float])
+        portfolio = [stock.Stock(d['name'], d['shares'], d['price']) for d in portdicts]
+    return portfolio
 
 def read_prices(filename):
   '''
@@ -23,11 +26,10 @@ def make_report_data(portfolio, prices):
   '''
   rows = []
 
-  for stock in portfolio:
-    current_price = prices[stock['name']]
-    change = current_price - stock['price']
-    rows.append((stock['name'], stock['shares'], current_price, change))
-
+  for s in portfolio:
+    current_price = prices[s.name]
+    change = current_price - s.price
+    rows.append((s.name, s.shares, current_price, change))
   return rows
 
 def print_report(reportdata):
