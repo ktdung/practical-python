@@ -1,4 +1,5 @@
 import fileparse
+import sys
 
 def read_portfolio(filename):
     '''
@@ -53,4 +54,15 @@ def portfolio_report(portfolio_file, prices_file):
   print_report(report)
 
 # Uncomment the following line to run the program
-portfolio_report('Data/portfolio.csv', 'Data/prices.csv')
+
+def main(args):
+    print(args)
+    if len(args)  != 3:
+        raise SystemExit(f'Usage: {args[0]} portfolio-file prices-file')
+    portfolio_report(args[1], args[2])
+
+
+
+if __name__ == '__main__':
+  import sys
+  main(sys.argv)

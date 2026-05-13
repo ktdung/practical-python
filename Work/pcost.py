@@ -49,12 +49,24 @@ def portfolio_cost(filename):
     return sum(stock['shares'] * stock['price'] for stock in portfolio)
 
 
-if len(sys.argv) == 2:
-  filename = sys.argv[1]
-else:
-  # filename = 'Data/missing.csv'
-#   filename = 'Data/portfolio.csv'
-    filename = input('Enter the portfolio filename: ')
+# if len(sys.argv) == 2:
+#   filename = sys.argv[1]
+# else:
+#   # filename = 'Data/missing.csv'
+# #   filename = 'Data/portfolio.csv'
+#     filename = input('Enter the portfolio filename: ')
 
-cost = portfolio_cost(filename)
-print('Total cost:', cost)
+# cost = portfolio_cost(filename)
+# print('Total cost:', cost)
+
+def main(args):
+   if len(args) != 2:
+      raise SystemExit(f'Usage: {args[0]} portfolio-file')
+   filename = args[1]
+   cost = portfolio_cost(filename)
+   print('Total cost:', cost)
+
+if __name__ == '__main__':
+  import sys
+  main(sys.argv)
+
