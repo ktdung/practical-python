@@ -43,7 +43,7 @@ def print_report(reportdata, formatter):
     rowdata = [row[0], str(row[1]), f'{row[2]:.2f}', f'{row[3]:.2f}']
     formatter.row(rowdata)
 
-def portfolio_report(portfolio_file, prices_file):
+def portfolio_report(portfolio_file, prices_file, fmtname='text'):
   '''
   Make a stock report from a portfolio file and a prices file.
   '''
@@ -56,16 +56,16 @@ def portfolio_report(portfolio_file, prices_file):
   report = make_report_data(portfolio, prices)
 
   # Print it out
-  formatter = tableformat.CSVTableFormatter()
+  formatter = tableformat.create_formatter(fmtname)
   print_report(report, formatter)
 
 # Uncomment the following line to run the program
 
 def main(args):
     print(args)
-    if len(args)  != 3:
-        raise SystemExit(f'Usage: {args[0]} portfolio-file prices-file')
-    portfolio_report(args[1], args[2])
+    if len(args)  != 4:
+        raise SystemExit(f'Usage: {args[0]} portfolio-file prices-file format')
+    portfolio_report(args[1], args[2], fmtname=args[3])
 
 
 
