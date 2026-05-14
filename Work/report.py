@@ -1,6 +1,7 @@
 import fileparse
 import sys
 import stock
+import tableformat
 
 def read_portfolio(filename):
     '''
@@ -32,15 +33,15 @@ def make_report_data(portfolio, prices):
     rows.append((s.name, s.shares, current_price, change))
   return rows
 
-def print_report(reportdata):
+def print_report(reportdata, formatter):
   '''
   Print a nicely formatted report of (name, shares, price, change) tuples.
   '''
-  headers = ('Name', 'Shares', 'Price', 'Change')
-  print(f'{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}')
-  print(f'{"-"*10} {"-"*10} {"-"*10} {"-"*10}')
+  formatter.headings(["Name", "Shares", "Price", "Change"])
+#   print(f'{"-"*10} {"-"*10} {"-"*10} {"-"*10}')
   for row in reportdata:
-    print(f'{row[0]:>10s} {row[1]:>10d} {row[2]:>10.2f} {row[3]:>10.2f}')
+    rowdata = [row[0], str(row[1]), f'{row[2]:.2f}', f'{row[3]:.2f}']
+    formatter.row(rowdata)
 
 def portfolio_report(portfolio_file, prices_file):
   '''
@@ -55,7 +56,8 @@ def portfolio_report(portfolio_file, prices_file):
   report = make_report_data(portfolio, prices)
 
   # Print it out
-  print_report(report)
+  formatter = tableformat.CSVTableFormatter()
+  print_report(report, formatter)
 
 # Uncomment the following line to run the program
 
